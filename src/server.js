@@ -15,11 +15,22 @@ const handleListen = () => console.log(`Listening on http://localhost:3000, ws:/
 const server = http.createServer(app); // server for http
 const wss = new WebSocket.Server({ server }) // http, web server를 동시에 돌리기 위함
 
-function handlerConnection(socket) {
-    console.log(socket);
-}
 
-wss.on('connection', handlerConnection);
+
+wss.on('connection', (socket) => {
+    console.log("Connected to Browser !");
+    
+    socket.send("Hello");
+    
+    socket.on("message", (message) => {
+        console.log("New message: ", message.toString());
+    })
+
+    socket.on("close", () => {
+        console.log("Disconnected from the browser!")
+    })
+});
+
 
 server.listen(3000, handleListen);
 
