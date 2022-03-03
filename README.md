@@ -18,3 +18,20 @@ Zoom Clone using NodeJS, WebRTC and Websockets
 
 # 설정 추가 옵션
 + app.get("/*", (req, res) => res.redirect("/")); 모든 요청 URL을 디폴트로 리다이렉션
+
+
+# HTTP VS WebSocket
+## HTTP
++ Request, Response로 구성되며, 비 연결형 통신 프로토콜이다
++ stateless: backend가 유저를 기억하지 못한다 -> 클라이언트와 서버 사이에 아무런 연결이 없다
++ 이렇게 서버가 유저를 잊어버리는 것을 stateless라 한다
+## WebSocket
++ wss://example.com 웹소켓을 지원하는 서버에 웹소켓으로 연결할 때 
++ Secure Web Socket (WSS) Web Socket Secure ?
++ WebSocket 연결이 일어날 때 마치 악수하는 것처럼 작동한다
++ 브라우저가 서버로 webSocket request를 보내면, 서버가 받거나 거절하거나 한다
++ 요청이 승인되고 악수(Handshake)가 성립되면, 연결(establish)은 성립 된다
++ Handshake란 손과 손이 연결되었다는 뜻이다
++ 연결이 유지되고 있기 때문에, 서버는 클라이언트가 누구인지 알 수 기억할 수 있다
++ 서버는 유저에게 원할 때 메시지를 보낼 수 있다
++ 서버는 리스폰스를 받지 않아도 여러개의 메시지를 보낼 수 있고, 유저는 메시지 한 개만 보내고 나머지는 무시할 수 있다.(bi-directional)
