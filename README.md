@@ -35,3 +35,19 @@ Zoom Clone using NodeJS, WebRTC and Websockets
 + 연결이 유지되고 있기 때문에, 서버는 클라이언트가 누구인지 알 수 기억할 수 있다
 + 서버는 유저에게 원할 때 메시지를 보낼 수 있다
 + 서버는 리스폰스를 받지 않아도 여러개의 메시지를 보낼 수 있고, 유저는 메시지 한 개만 보내고 나머지는 무시할 수 있다.(bi-directional)
+
+# ws Socket Communication
++ server 에서의 동작
+    * const server = http.createServer(app) // HTTP 서버를 만듬
+    * const ws = new WebSocket({ server }) // http 서버를 인자로 넣어서 소켓 서버 생성
+    * we.on('connection', (socket) => {}) // ws.on('connection')으로 서버를 열고 접속한 클라이언트를 socket으로 받아서 여러 가지 이벤트 실행
+    * socket.send() // 소켓에 메시지 전달
+    * socket.on("message", (message) => message.toString()) // 소켓으로 부터 메시지 전달받음 toString으로 바이너리를 변경해주어야 함(브라우저에서 바이너리로 변경해서 메시지 던짐)
+    * socket.on("close") // 클라이언트 소켓이 닫혔을 때 이벤트 처리
++ client 에서의 동작
+    * client js 파일 app.js에 코드 작성
+    * 소켓 생성 const socket = new WebSocket(`ws://${window.location.host}');  // window.location.host로 주소 전달
+    * socket.addEventHandler("open", () => {}) // 소켓 오픈 되었을 떄 이벤트 처리
+    * socket.addEventHandler("message", (message) => {}) // 서버로 부터 메시지 받았을 때 이벤트 처리
+    * socket.addEventHandler("close", () => {}) // 서버 접속 끊겼을 때 이벤트 처리
+    * setTimeout(() => { socket.send()}, 5000); // setTimeout으로 5초 후 메시지 서버로 전송
