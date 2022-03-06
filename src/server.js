@@ -28,14 +28,14 @@ wss.on('connection', (socket) => {
         
         switch(jsonMessage.type) {
             case "new_message":
-                console.log("new_message");
                 sockets.forEach((aSocket) => { 
-                    console.log(aSocket.nickname);
-                    aSocket.send(`${socket.nickname}: ${jsonMessage.payload}`);
+                    if(aSocket != socket) {
+                        aSocket.send(`${socket.nickname}: ${jsonMessage.payload}`);
+                    }
+                    
                 });
                 break;
             case "nickname":
-                console.log("nickname")
                 socket["nickname"] = jsonMessage.payload;
                 break;
         }
