@@ -26,11 +26,9 @@ wss.on('connection', (socket) => {
     socket.on("message", (message) => {
         console.log("New message: ", message.toString());
         
-        sockets.forEach(socket => {
+        sockets.forEach(socket => { // send message to all connected sockets
             socket.send(message.toString());
         })
-        //socket.send(message.toString());
-
     });
 
     socket.on("close", () => {
