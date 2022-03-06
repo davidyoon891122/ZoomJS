@@ -1,4 +1,4 @@
-import express from "express";
+import express, { json } from "express";
 import http from "http"
 import WebSocket from "ws";
 
@@ -21,14 +21,25 @@ const sockets = [];
 
 wss.on('connection', (socket) => {
     sockets.push(socket); // add socket to queue
-    console.log("Connected to Browser !");
+    socket["nickname"] = "Ananymous";
 
     socket.on("message", (message) => {
-        console.log("New message: ", message.toString());
+        const jsonMessage = JSON.parse(message);
         
-        sockets.forEach(socket => { // send message to all connected sockets
-            socket.send(message.toString());
-        })
+        switch(jsonMessage.type) {
+            case "new_message":
+                console.log("new_message");
+                sockets.forEach((aSocket) => { 
+                    console.log(aSocket.nickname);
+                    aSocket.send(`${socket.nickname}: ${jsonMessage.payload}`);
+                });
+                break;
+            case "nickname":
+                console.log("nickname")
+                socket["nickname"] = jsonMessage.payload;
+                break;
+        }
+
     });
 
     socket.on("close", () => {
