@@ -16,19 +16,26 @@ const server = http.createServer(app); // server for http
 const wss = new WebSocket.Server({ server }) // http, web server를 동시에 돌리기 위함
 
 
+const sockets = [];
+
 
 wss.on('connection', (socket) => {
+    sockets.push(socket); // add socket to queue
     console.log("Connected to Browser !");
-    
-    socket.send("Hello");
-    
+
     socket.on("message", (message) => {
         console.log("New message: ", message.toString());
-    })
+        
+        sockets.forEach(socket => {
+            socket.send(message.toString());
+        })
+        //socket.send(message.toString());
+
+    });
 
     socket.on("close", () => {
         console.log("Disconnected from the browser!")
-    })
+    });
 });
 
 
