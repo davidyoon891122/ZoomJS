@@ -51,3 +51,30 @@ Zoom Clone using NodeJS, WebRTC and Websockets
     * socket.addEventHandler("message", (message) => {}) // 서버로 부터 메시지 받았을 때 이벤트 처리
     * socket.addEventHandler("close", () => {}) // 서버 접속 끊겼을 때 이벤트 처리
     * setTimeout(() => { socket.send()}, 5000); // setTimeout으로 5초 후 메시지 서버로 전송
+
+# socket io
++ socket io is a libary that enables low-latency, bidirectional and event-based communication between a client and a server
++ npm i socket.io로 설치
++ ws의 프로토콜 위에서 동작하도록 만들어 졌으며 websocket이 불가할 때는 HTTP long-polling 또는 자동 재접속으로 추가적인 가능을 제공해주는 프레임워크
++ const httpServer = http.createServer(app);
++ const ioServer = SocketIO(httpServer); // http서버와 동시에 사용 가능
++ 사용법
+    * ServerSide
+    * ioServer.on("connection", socket => {
+        socket.on("room", (0~n-1까지는 메시지, n은 콜백 함수로 사용 가능) => {
+            consol.log(roomName);
+            setTimeout(() => {
+                callbackFunc("Message");
+            }, 5000);
+        });
+    });
+    * ClientSide
+    * pug 파일
+        - script(src="/socket.io/socket.io.js) 추가 실행
+    * app.js 파일
+        - const socket = io();
+        - socket.emit("room_name", input.value, callBackFunction)
+        - 콜백 함수는 서버의 있는 함수가 실행되는 것이 아니라 서버가 클라이언트 사이드 app.js에 있는 함수를 실행시키는 것이다!
+        
+
+    
