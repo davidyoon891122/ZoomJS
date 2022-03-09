@@ -15,8 +15,15 @@ const handleListen = () => console.log(`Listening on http://localhost:3000, ws:/
 const httpServer = http.createServer(app); // server for http
 const ioServer = SocketIO(httpServer);
 
-ioServer.on("connection", socket => {
+ioServer.on("connection", (socket) => {
     console.log(socket);
+
+    socket.on("enter_room", (message, done) => {
+        console.log(message);
+        setTimeout(() => {
+            done();
+        }, 10000);
+    });
 });
 
 // const wss = new WebSocket.Server({ server }) // http, web server를 동시에 돌리기 위함
