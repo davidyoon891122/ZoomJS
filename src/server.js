@@ -1,6 +1,6 @@
 import express, { json } from "express";
 import http from "http"
-import WebSocket from "ws";
+import SocketIO from "socket.io";
 
 const app = express();
 
@@ -12,43 +12,49 @@ app.get("/*", (req, res) => res.redirect("/"));
 
 const handleListen = () => console.log(`Listening on http://localhost:3000, ws://localhost:3000`);
 
-const server = http.createServer(app); // server for http
-const wss = new WebSocket.Server({ server }) // http, web server를 동시에 돌리기 위함
+const httpServer = http.createServer(app); // server for http
+const ioServer = SocketIO(httpServer);
 
-
-const sockets = [];
-
-
-wss.on('connection', (socket) => {
-    sockets.push(socket); // add socket to queue
-    socket["nickname"] = "Ananymous";
-
-    socket.on("message", (message) => {
-        const jsonMessage = JSON.parse(message);
-        
-        switch(jsonMessage.type) {
-            case "new_message":
-                sockets.forEach((aSocket) => { 
-                    if(aSocket != socket) {
-                        aSocket.send(`${socket.nickname}: ${jsonMessage.payload}`);
-                    }
-                    
-                });
-                break;
-            case "nickname":
-                socket["nickname"] = jsonMessage.payload;
-                break;
-        }
-
-    });
-
-    socket.on("close", () => {
-        console.log("Disconnected from the browser!")
-    });
+ioServer.on("connection", socket => {
+    console.log(socket);
 });
 
+// const wss = new WebSocket.Server({ server }) // http, web server를 동시에 돌리기 위함
 
-server.listen(3000, handleListen);
+// const sockets = [];
+
+// wss.on('connection', (socket) => {
+//     sockets.push(socket); // add socket to queue
+//     socket["nickname"] = "Ananymous";
+
+//     socket.on("message", (message) => {
+//         const jsonMessage = JSON.parse(message);
+        
+//         switch(jsonMessage.type) {
+//             case "new_message":
+//                 sockets.forEach((aSocket) => { 
+//                     if(aSocket != socket) {
+//                         aSocket.send(`${socket.nickname}: ${jsonMessage.payload}`);
+//                     }
+                    
+//                 });
+//                 break;
+//             case "nickname":
+//                 socket["nickname"] = jsonMessage.payload;
+//                 break;
+//         }
+
+//     });
+
+//     socket.on("close", () => {
+//         console.log("Disconnected from the browser!")
+//     });
+// });
+
+
+
+
+httpServer.listen(3000, handleListen);
 
 
 
