@@ -1,5 +1,16 @@
 # Noom
+
 Zoom Clone using NodeJS, WebRTC and Websockets
+
+# How to install
++ npm install
++ 'babel-node'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는
+배치 파일이 아닙니다.
+    * npm i @babel/node -g
+
+# How to run
++ npm run dev
++ check package.json / script
 
 # 프로젝트 설정 설명
 + Nodemone: 소스 파일 변경 시 자동으로 서버 재시작 해주는 프로그램
